@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,13 +44,24 @@ class User
      * @var string 
      */    
     private $username;
+    
     /**
      * @ORM\Column(type="date")
-     * @var \DateTime 
+     * @var DateTime 
      */    
     private $birthdate;
+        
+    /**
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="user")
+     * @var Collection
+     */
+    private $products;
     
-    public function getId() {
+    public function __construct() {
+        $this->products = new ArrayCollection();
+    }
+    
+    public function getId(){
         return $this->id;
     }
 
@@ -105,10 +119,24 @@ class User
         return $this;
     }
 
-    public function setBirthdate(\DateTime $birthdate) {
+    public function setBirthdate(DateTime $birthdate) {
         $this->birthdate = $birthdate;
         return $this;
     }
+
+    public function getProducts() {
+        return $this->products;
+    }
+
+    public function setProducts(Collection $products) {
+        $this->products = $products;
+        return $this;
+    }
+
+
+
+
+
 
   
     

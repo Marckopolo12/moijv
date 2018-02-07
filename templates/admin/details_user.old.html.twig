@@ -1,0 +1,17 @@
+{# empty Twig template #}
+{% extends "base.html.twig" %}
+{% block title %}Détail de l'utilisateur {{user.firstname}} {{user.lastname}} {% endblock %}
+
+{% block body %}
+    {{ user.firstname }}
+    <h1>Détail de l'utilisateur {{ user.firstname}} {{user.lastname}} </h1>
+    {{ user.firstname }}
+    <h2>Liste des produit </h2>
+
+    <ul>
+    {% for product in user.products %}
+            
+            {% endfor %}
+    </ul>
+
+{% endblock body %}
