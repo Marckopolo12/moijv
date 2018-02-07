@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Liste des produits{% endblock %}
+
+{% block body %}
+    <h1>Bienvenue sur la liste des produits</h1>
+
+    <!-- La syntaxe ci-dessous est une commentaire twig-->
+    {# TODO generate user list #}
+
+    <!-- ligne de dessous = version php --> 
+
+    <ul>
+        {# <?php foreach($users as $user): ?> #}
+        {% for product in products %}
+            <li>
+                {#    <?= htmlspecialchars $user->getFirstname(); ?>#}
+                {{ product.name}}-{{ product.description}}
+                <a href="{{path('product_details', {id : product.id })}}">product detail</a>
+                
+            </li>    
+            {# <?php endforeach; ?> #}
+        {% endfor %}
+    </ul>
+    
+    
+    
+    
+    <ul>
+    {% for product in products %}
+    <li>
+    {{ product.name}}
+    {% for tag in product.tags %}
+        <a href="{{path('list_product_by_tag', {name : tag.name })}}">#{{ tag.name }}</a>
+        {% endfor %}
+    </li>
+    {% endfor %}
+    </ul>
+    
+{% endblock body %}{# empty Twig template #}

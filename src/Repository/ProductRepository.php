@@ -6,23 +6,42 @@ use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-class ProductRepository extends ServiceEntityRepository
-{
-    public function __construct(RegistryInterface $registry)
-    {
+class ProductRepository extends ServiceEntityRepository {
+
+    public function __construct(RegistryInterface $registry) {
         parent::__construct($registry, Product::class);
     }
 
-    /*
-    public function findBySomething($value)
-    {
+    public function findAllWithTags() {
         return $this->createQueryBuilder('p')
-            ->where('p.something = :value')->setParameter('value', $value)
-            ->orderBy('p.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+                        ->leftJoin('p.tags', 't')
+                        ->addSelect('t')
+                        ->getQuery()
+                        ->getResult();
     }
-    */
+
+    public function findByTagWithTags($tag) {
+        // select * from PRODUCT left join PRODUCT8TAG on PRODUCT8TAG;PRODUCT8ID
+        // 
+        return $this->createQueryBuilder('p')
+                        ->leftJoin('p.tags', 't')
+                        ->addSelect('t')
+                        ->where('t.name = :name')
+                        ->setParameter(':name', $tag->getName())
+                        ->getQuery()
+                        ->getResult();
+    }
+
+    /*
+      public function findBySomething($value)
+      {
+      return $this->createQueryBuilder('p')
+      ->where('p.something = :value')->setParameter('value', $value)
+      ->orderBy('p.id', 'ASC')
+      ->setMaxResults(10)
+      ->getQuery()
+      ->getResult()
+      ;
+      }
+     */
 }

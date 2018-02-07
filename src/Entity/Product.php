@@ -5,13 +5,15 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Table;
 use Doctrine\ORM\Mapping\Index;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
- * @Table(indexes = {@Index (name = "state_index", columns ={"state"})})
+ * @Table(indexes={@Index (name = "state_index", columns ={"state"})})
  */
-class Product
-{
+class Product {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -20,99 +22,116 @@ class Product
     private $id;
 
     // add your own fields
-    
-    
+
     /**
      * @ORM\Column(type="string", length=50 )
      * @var string
      */
-    private $name; 
-    
-    
+    private $name;
+
     /**
      * @ORM\Column(type="text")
      * @var string
      */
     private $description;
-    
-    
+
     /**
      * @ORM\Column(type="string", length=255 )
      */
     private $image;
-    
-    
+
     /**
      * @ORM\Column(type="string", length=25 ) 
      * @var string
      */
-    private$state;
-    
+            private$state;
+
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="products")
      * @var User
      */
     private $user;
-    
-            
-public  function getId() {
-return $this->id;
-}
 
-public function getName() {
-return $this->name;
-}
+    /**
+     * @ORM\ManyToMany(targetEntity="Tag", mappedBy="products")
+     * @var Collection 
+     */
+    private $tags;
 
-public function getDescription() {
-return $this->description;
-}
+    public function __construct() {
+        $this->tags = new ArrayCollection();
+    }
 
-public function getImage() {
-return $this->image;
-}
+    public function addTag($tag) {
+        if ($this->getTags()->contains($tag)) {
+            return;
+        }
 
-public function getState() {
-return $this->state;
-}
+        $this->getTags()->add($tag);
+        $tag->getProducts()->add($this);
+    }
 
-public function setId($id) {
-$this->id = $id;
-return $this;
-}
+    public function getId() {
+        return $this->id;
+    }
 
-public function setName($name) {
-$this->name = $name;
-return $this;
-}
+    public function getName() {
+        return $this->name;
+    }
 
-public function setDescription($description) {
-$this->description = $description;
-return $this;
-}
+    public function getDescription() {
+        return $this->description;
+    }
 
-public function setImage($image) {
-$this->image = $image;
-return $this;
-}
+    public function getImage() {
+        return $this->image;
+    }
 
-public function setState($state) {
-$this->state = $state;
-return $this;
-}
+    public function getState() {
+        return $this->state;
+    }
 
-public function getUser() {
-    return $this->user;
-}
+    public function setId($id) {
+        $this->id = $id;
+        return $this;
+    }
 
-public function setUser(User $user) {
-    $this->user = $user;
-    return $this;
-}
+    public function setName($name) {
+        $this->name = $name;
+        return $this;
+    }
 
+    public function setDescription($description) {
+        $this->description = $description;
+        return $this;
+    }
 
+    public function setImage($image) {
+        $this->image = $image;
+        return $this;
+    }
 
+    public function setState($state) {
+        $this->state = $state;
+        return $this;
+    }
 
+    public function getUser() {
+        return $this->user;
+    }
 
+    public function setUser(User $user) {
+        $this->user = $user;
+        return $this;
+    }
 
- 
+    public function getTags() {
+        return $this->tags;
+    }
+
+    public function setTags(Collection $tags) {
+        $this->tags = $tags;
+        return $this;
+    }
+
 }
