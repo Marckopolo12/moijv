@@ -1,0 +1,23 @@
+{# empty Twig template #}
+{% extends "base.html.twig" %}
+
+{% block title %}Mes produits{% endblock %}
+
+{% block body %}
+    <h1>Mes produits</h1>
+    
+    <ul>
+        {# <?php foreach($users as $user): ?> #}
+        {% for product in app.user.products %}
+            <li>
+                {#    <?= htmlspecialchars $user->getFirstname(); ?>#}
+                {{ product.name}}-{{ product.description}}
+                {#<a href="{{path('product_details', {id : product.id })}}">product detail</a>
+                
+            </li>    
+            {# <?php endforeach; ?> #}
+        {% endfor %}
+    </ul>
+    
+    
+    {% endblock %}

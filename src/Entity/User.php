@@ -6,11 +6,12 @@ use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @ORM\Id
@@ -57,9 +58,63 @@ class User
      */
     private $products;
     
+   
+    /**
+     * @ORM\Column(type="string")
+     * var string
+     */
+    private $roles;
+    
+    public function getRoles() {
+        // "ROLE_USER|ROLE_ADMIN"
+        //$this->roles = $roles;
+        //return $this;
+        return \explode ('|',$this->roles);
+        
+    }
+
+        
     public function __construct() {
         $this->products = new ArrayCollection();
     }
+    
+     public function getSalt()
+    {
+       
+        return null;
+    }
+    
+    public function setRoles($roles) {
+        $this->roles = $roles;
+        return $this;
+    }
+
+        
+    public function eraseCredentials()
+    {
+    }
+    
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+        
+        ));
+    }
+    
+     public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+           
+        ) = unserialize($serialized);
+    }
+    
+        
     
     public function getId(){
         return $this->id;

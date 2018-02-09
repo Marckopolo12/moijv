@@ -52,5 +52,19 @@ class ProductController extends Controller {
             'tag' => $tag    
         ]);
     }
-        
+    
+    /**
+     * @Route("/admin/product/tag2/{name}", name="list_product_by_tag2")
+     */
+    public function getListByTag2(Tag $tag, ProductRepository $productRepo) {
+// cela equivaut à $userRepo = new \App\Respository\UserRepository();
+// notre repository est "injecté" en paramètre de l'action (la méthode de notre controller. $userRepo contient donc une instance 
+//(un objet) prêt à l'emploi de la class UserRepository
+// Cet objet nous sert à récupérer notre liste d'utilisateurs.
+        $products = $productRepo->findByTagWithTags($tag);
+        return $this->render('admin/list_product_by_tag.html.twig', [
+            'products'=> $products,
+            'tag' => $tag    
+        ]);
+    }    
 }
